@@ -6,6 +6,8 @@ import { View, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import About from './AboutComponent';
+import Contact from './ContactComponent';
 
 
 const MenuNavigator = ()=>{ 
@@ -44,6 +46,41 @@ const HomeNavigator = ()=>{
             <Nav.Screen name="Home" component={Home} />
         </Nav.Navigator>
     );
+}
+const AboutNavigator = ()=>{ 
+    const Nav=createStackNavigator();
+    return(
+        <Nav.Navigator initialRouteName='About Us'
+            screenOptions= {{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: "#fff"
+                }
+            }}>
+            <Nav.Screen name="About Us" component={About} />
+        </Nav.Navigator>
+    );
+
+}
+const ContactNavigator = ()=>{ 
+    const Nav=createStackNavigator();
+    return(
+        <Nav.Navigator initialRouteName='Contact Us'
+            screenOptions= {{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: "#fff"
+                }
+            }}>
+            <Nav.Screen name="Contact Us" component={Contact} />
+        </Nav.Navigator>
+    );
 
 }
 
@@ -62,7 +99,9 @@ class Main extends Component {
                       }}
                 >
                     <Drawer.Screen name="Home" component={HomeNavigator} />
+                    <Drawer.Screen name="About Us" component={AboutNavigator} />
                     <Drawer.Screen name="Menu" component={MenuNavigator} />
+                    <Drawer.Screen name="Contact Us" component={ContactNavigator} />
                 </Drawer.Navigator>
             </NavigationContainer>
         </View>
