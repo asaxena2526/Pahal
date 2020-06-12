@@ -9,6 +9,25 @@ import { createDrawerNavigator,DrawerItemList } from '@react-navigation/drawer';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
 import {Icon} from 'react-native-elements';
+import {connect} from 'react-redux';
+import {fetchComments,fetchLeaders,fetchPromos,fetchDishes} from '../redux/ActionCreators';
+
+
+const mapStateToProps = state =>{
+    return{
+        dishes: state.dishes,
+        comments: state.comments,
+        promotions: state.promotions,
+        leaders: state.leaders
+    }
+};
+
+const mapDispatchToProps = dispatch => ({
+    fetchComments: ()=>dispatch(fetchComments()),
+    fetchDishes: ()=>dispatch(fetchDishes()),
+    fetchLeaders: ()=>dispatch(fetchLeaders()),
+    fetchPromos: ()=>dispatch(fetchPromos())
+});
 
 
 const MenuNavigator = ({navigation})=>{ 
@@ -128,63 +147,74 @@ const CustomDrawerContentComponent = (props) => (
 const Drawer = createDrawerNavigator();
 
 class Main extends Component {
-  
-  render() {
+
+    
+
+    componentDidMount() {
+        // console.log(baseUrl + 'comments');
+        console.log('YES\n\n\n\n\n\n\n\n');
+        this.props.fetchDishes();
+        this.props.fetchComments();
+        this.props.fetchPromos();
+        this.props.fetchLeaders();
+    }
+
+    render() {
  
-    return (
-        <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
-            <NavigationContainer>
-                <Drawer.Navigator initialRouteName="Home" 
-                    drawerStyle={{
-                        backgroundColor: '#D1C4E9'
-                      }}
-                    drawerContent={CustomDrawerContentComponent}
-                >
-                    <Drawer.Screen name="Home" component={HomeNavigator}
-                        options={{ 
-                        drawerIcon: ({ tintColor, focused }) => (
-                            <Icon
-                              name='home'
-                              type='font-awesome'            
-                              size={25}
-                              color={tintColor}
-                            />
-                          )}}/>
-                    <Drawer.Screen name="About Us" component={AboutNavigator}
-                        options={{ 
+        return (
+            <View style={{flex:1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+                <NavigationContainer>
+                    <Drawer.Navigator initialRouteName="Home" 
+                        drawerStyle={{
+                            backgroundColor: '#D1C4E9'
+                        }}
+                        drawerContent={CustomDrawerContentComponent}
+                    >
+                        <Drawer.Screen name="Home" component={HomeNavigator}
+                            options={{ 
                             drawerIcon: ({ tintColor, focused }) => (
                                 <Icon
-                                  name='info-circle'
-                                  type='font-awesome'            
-                                  size={27}
-                                  color={tintColor}
+                                name='home'
+                                type='font-awesome'            
+                                size={25}
+                                color={tintColor}
                                 />
-                              )}} />
-                    <Drawer.Screen name="Menu" component={MenuNavigator}
-                        options={{ 
-                            drawerIcon: ({ tintColor, focused }) => (
-                                <Icon
-                                  name='list'
-                                  type='font-awesome'            
-                                  size={24}
-                                  color={tintColor}
-                                />
-                              )}} />
-                    <Drawer.Screen name="Contact Us" component={ContactNavigator}
-                        options={{ 
-                            drawerIcon: ({ tintColor, focused }) => (
-                                <Icon
-                                  name='address-card'
-                                  type='font-awesome'            
-                                  size={22}
-                                  color={tintColor}
-                                />
-                              )}} />
-                </Drawer.Navigator>
-            </NavigationContainer>
-        </View>
-    );
-  }
+                            )}}/>
+                        <Drawer.Screen name="About Us" component={AboutNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='info-circle'
+                                    type='font-awesome'            
+                                    size={27}
+                                    color={tintColor}
+                                    />
+                                )}} />
+                        <Drawer.Screen name="Menu" component={MenuNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='list'
+                                    type='font-awesome'            
+                                    size={24}
+                                    color={tintColor}
+                                    />
+                                )}} />
+                        <Drawer.Screen name="Contact Us" component={ContactNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='address-card'
+                                    type='font-awesome'            
+                                    size={22}
+                                    color={tintColor}
+                                    />
+                                )}} />
+                    </Drawer.Navigator>
+                </NavigationContainer>
+            </View>
+        );
+    }
 }
  
 
@@ -212,4 +242,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default connect(mapStateToProps,mapDispatchToProps)(Main);
