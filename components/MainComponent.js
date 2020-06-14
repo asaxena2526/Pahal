@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Home from './HomeComponent';
+import Reservation from './ReservationComponent';
 import { View, Platform, ScrollView,Image,StyleSheet ,Text} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -128,6 +129,31 @@ const ContactNavigator = ({navigation})=>{
 
 }
 
+const ReserveNavigator = ({navigation})=>{ 
+    const Nav=createStackNavigator();
+    return(
+        <Nav.Navigator initialRouteName='Reserve Table'
+            screenOptions= {{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: "#fff"
+                }
+            }}>
+            <Nav.Screen name="Reserve Table" component={Reservation}
+                options={{
+                    headerLeft: ()=>(<Icon name="menu" size={24} 
+                    color= 'white'
+                    onPress={ () => 
+                        navigation.toggleDrawer() } />)
+                }} />
+        </Nav.Navigator>
+    );
+
+}
+
 const CustomDrawerContentComponent = (props) => (
     <ScrollView>
       <View style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
@@ -151,8 +177,6 @@ class Main extends Component {
     
 
     componentDidMount() {
-        // console.log(baseUrl + 'comments');
-        console.log('YES\n\n\n\n\n\n\n\n');
         this.props.fetchDishes();
         this.props.fetchComments();
         this.props.fetchPromos();
@@ -205,6 +229,16 @@ class Main extends Component {
                                 drawerIcon: ({ tintColor, focused }) => (
                                     <Icon
                                     name='address-card'
+                                    type='font-awesome'            
+                                    size={22}
+                                    color={tintColor}
+                                    />
+                                )}} />
+                        <Drawer.Screen name="Reserve Table" component={ReserveNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='cutlery'
                                     type='font-awesome'            
                                     size={22}
                                     color={tintColor}
