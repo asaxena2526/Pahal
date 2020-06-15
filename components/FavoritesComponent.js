@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {deleteFavorite} from '../redux/ActionCreators';
 import {baseUrl} from '../shared/baseUrl';
 import {Loading} from './LoadingComponent';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state =>{
     return {
@@ -44,16 +45,18 @@ class Favorites extends Component {
                 onPress:() => createTwoButtonAlert(dish.id,dish.name)
             }]
             return(
-                <Swipeout right={deleteButton} autoClose={true}>
-                    <ListItem
-                        key={index}
-                        title={dish.name}
-                        subtitle={dish.description}
-                        hideChevron={true}
-                        onPress={() => navigate('Dishdetail', { dishId: dish.id })}
-                        leftAvatar={{ source: {uri: baseUrl + dish.image}}}
-                        />
-                </Swipeout>
+                <Animatable.View animation="fadeInRightBig" duration={2000} delay={1000}>
+                    <Swipeout right={deleteButton} autoClose={true}>
+                        <ListItem
+                            key={index}
+                            title={dish.name}
+                            subtitle={dish.description}
+                            hideChevron={true}
+                            onPress={() => navigate('Dishdetail', { dishId: dish.id })}
+                            leftAvatar={{ source: {uri: baseUrl + dish.image}}}
+                            />
+                    </Swipeout>
+                </Animatable.View>
             );
         }
         if (this.props.dishes.isLoading) {
@@ -77,6 +80,7 @@ class Favorites extends Component {
                         keyExtractor={item => this.props.dishes.dishes[+item].id.toString()}
                     />
                 </View>
+                
             );
         }
     }
