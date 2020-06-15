@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { ScrollView,View, Text } from 'react-native';
+import {View, Text, Animated, Easing } from 'react-native';
 import {Card} from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
@@ -51,24 +51,64 @@ function RenderItem(props){
 
 class Home extends Component {
 
+    constructor(props) {
+        super(props);
+        this.animatedValue = new Animated.Value(0);        
+    }
+
+
+    componentDidMount () {
+        this.animate()
+    }
+
+    animate () {
+        this.animatedValue.setValue(0)
+        Animated.timing(
+          this.animatedValue,
+          {
+            toValue: 11,
+            duration: 10000,
+            easing: Easing.linear
+          }
+        ).start(() => this.animate())
+    }
 
     render(){
+        const xpos1 = this.animatedValue.interpolate({
+            inputRange: [0, 2, 4, 6, 8],
+            outputRange: [600, 300, 0, -300, -600]
+        })
+        const xpos2 = this.animatedValue.interpolate({
+            inputRange: [1, 3, 5, 7, 9],
+            outputRange: [600, 300, 0, -300, -600]
+        })
+        const xpos3 = this.animatedValue.interpolate({
+            inputRange: [2, 4, 6, 8, 10],
+            outputRange: [600, 300, 0, -300, -600]
+        })
+
         console.log('Home');
         return(
-            <ScrollView>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+            <Animated.View style={{ width: '100%', transform: [{translateX: xpos1}]}}>
                 <RenderItem item={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
                     isLoading={this.props.dishes.isLoading}
                     erreMess={this.props.dishes.erreMess} 
                     />
+            </Animated.View>
+            <Animated.View style={{ width: '100%',  transform: [{translateX: xpos2}]}}>
                 <RenderItem item={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
                     isLoading={this.props.promotions.isLoading}
                     erreMess={this.props.promotions.erreMess} 
                     />
+            </Animated.View>
+            <Animated.View style={{ width: '100%',  transform: [{translateX: xpos3}]}}>
                 <RenderItem item={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
                     isLoading={this.props.leaders.isLoading}
                     erreMess={this.props.leaders.erreMess} 
                     />
-            </ScrollView>
+                </Animated.View>
+            </View>
         )
     }
 }
