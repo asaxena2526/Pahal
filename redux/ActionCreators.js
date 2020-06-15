@@ -31,6 +31,51 @@ export const addComments = (comments) => ({
     payload: comments
 });
 
+export const postComment = (dishId,rating,author,comment)  => (dispatch) => {
+
+    const date =  (new Date()).toISOString();
+    const review = {
+        dishId:dishId,
+        rating:rating,
+        author:author,
+        comment:comment,
+        date:date
+    }
+    return fetch(baseUrl + 'comments',{
+        method:'POST',
+        body: JSON.stringify(review),
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        credentials:'same-origin'
+    })
+    .then(response=>{
+        if(response.ok)
+            return response;
+        else{
+            var error= new Error('Error '+response.status+ ': '+ response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }, 
+    error=>{
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response=>response.json())
+    .then(response=>dispatch(addComment(response)))
+    .catch(error=>{console.log('Post comments ',error.message);
+    alert('Your comment could not be posted\nError: ',error.message)
+    });
+};
+
+
+export const addComment = (review) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: review
+});
+
+
 export const fetchDishes = () => (dispatch) => {
 
     dispatch(dishesLoading());
@@ -154,3 +199,10 @@ export const addFavorite = (dishId) => ({
     type: ActionTypes.ADD_FAVORITE,
     payload: dishId
 });
+
+export const deleteFavorite = (dishId) => ({
+    type:ActionTypes.DELETE_FAVORITE,
+    payload:dishId
+});
+
+
