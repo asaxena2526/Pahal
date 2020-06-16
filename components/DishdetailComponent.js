@@ -26,6 +26,8 @@ function RenderDish(props) {
 
     const dish = props.dish;
     
+    const viewRef = React.createRef();
+
     const recongnizeDrag= ({moveX,moveY,dx,dy}) =>{
         if (dx<-200)
             return true;
@@ -35,6 +37,10 @@ function RenderDish(props) {
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e,gestureState) => {
             return true;
+        },
+        onPanResponderGrant:()=>{
+            viewRef.current.rubberBand(1000)
+                .then(endState=>console.log(endState.finished? "Finished":"Cancelled"))
         },
         onPanResponderEnd: (e,gestureState)=>{
             if(recongnizeDrag(gestureState)){
@@ -61,6 +67,7 @@ function RenderDish(props) {
         if (dish != null) {
             return(
                 <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+                 ref = {viewRef}
                  {...panResponder.panHandlers}>
                     <Card
                     featuredTitle={dish.name}
