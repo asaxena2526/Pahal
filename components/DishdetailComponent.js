@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Text, View, ScrollView,FlatList,Modal, Button, StyleSheet } from 'react-native';
+import { Text, View, ScrollView,FlatList,Modal, Button, StyleSheet, PanResponder,Alert } from 'react-native';
 import { Card,Icon,Input,Rating } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
@@ -26,9 +26,42 @@ function RenderDish(props) {
 
     const dish = props.dish;
     
+    const recongnizeDrag= ({moveX,moveY,dx,dy}) =>{
+        if (dx<-200)
+            return true;
+        else
+            return false;
+    }
+    const panResponder = PanResponder.create({
+        onStartShouldSetPanResponder: (e,gestureState) => {
+            return true;
+        },
+        onPanResponderEnd: (e,gestureState)=>{
+            if(recongnizeDrag(gestureState)){
+                Alert.alert(
+                    'Add to Favorites?',
+                    'Are you sure you wish to add '+ dish.name+ ' to your favorites?',
+                    [
+                        {
+                            text:'Cancel',
+                            onPress: ()=>console.log('Cancel passed'),
+                            style:'cancel' 
+                        },
+                        {
+                            text: 'Ok',
+                            onPress:()=>props.favorite? console.log('Already Favorite'): props.onPress(1)
+                        }
+                    ],
+                    {cancelable:false}
+                )
+            }
+
+        }
+    })
         if (dish != null) {
             return(
-                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+                <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
+                 {...panResponder.panHandlers}>
                     <Card
                     featuredTitle={dish.name}
                     image={{uri:baseUrl+dish.image}}>
