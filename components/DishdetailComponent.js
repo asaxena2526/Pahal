@@ -30,9 +30,11 @@ function RenderDish(props) {
 
     const recongnizeDrag= ({moveX,moveY,dx,dy}) =>{
         if (dx<-200)
-            return true;
+            return 1;
+        else if(dx>200)
+            return 2;
         else
-            return false;
+            return 3;
     }
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (e,gestureState) => {
@@ -43,7 +45,7 @@ function RenderDish(props) {
                 .then(endState=>console.log(endState.finished? "Finished":"Cancelled"))
         },
         onPanResponderEnd: (e,gestureState)=>{
-            if(recongnizeDrag(gestureState)){
+            if(recongnizeDrag(gestureState)===1){
                 Alert.alert(
                     'Add to Favorites?',
                     'Are you sure you wish to add '+ dish.name+ ' to your favorites?',
@@ -60,6 +62,9 @@ function RenderDish(props) {
                     ],
                     {cancelable:false}
                 )
+            }
+            else if(recongnizeDrag(gestureState)===2){
+                props.onPress(2);
             }
 
         }
