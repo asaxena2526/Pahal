@@ -182,7 +182,7 @@ const FavoritesNavigator = ({navigation})=>{
 const LoginNavigator = ({navigation})=>{ 
     const Nav=createStackNavigator();
     return(
-        <Nav.Navigator initialRouteName='Login'
+        <Nav.Navigator initialRouteName='Account'
             screenOptions= {{
                 headerStyle: {
                     backgroundColor: "#512DA8"
@@ -192,7 +192,7 @@ const LoginNavigator = ({navigation})=>{
                     color: "#fff"
                 }
             }}>
-            <Nav.Screen name="Login" component={Login}
+            <Nav.Screen name="Account" component={Login}
                 options={{
                     headerLeft: ()=>(<Icon name="menu" size={24} 
                     color= 'white'
