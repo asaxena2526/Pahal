@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Text, View, ScrollView,FlatList,Modal, Button, StyleSheet, PanResponder,Alert } from 'react-native';
+import { Text, View, ScrollView,FlatList,Modal, Button, StyleSheet,PanResponder,Alert, Share } from 'react-native';
 import { Card,Icon,Input,Rating } from 'react-native-elements';
 import {connect} from 'react-redux';
 import {baseUrl} from '../shared/baseUrl';
@@ -26,6 +26,16 @@ function RenderDish(props) {
 
     const dish = props.dish;
     
+    const shareDish = (title, message, url) => {
+        Share.share({
+            title: title,
+            message: title + ': ' + message + ' ' + url,
+            url: url
+        },{
+            dialogTitle: 'Share ' + title
+        })
+    }
+
     const viewRef = React.createRef();
 
     const recongnizeDrag= ({moveX,moveY,dx,dy}) =>{
@@ -86,15 +96,23 @@ function RenderDish(props) {
                                 reverse
                                 name={props.favorite?'heart':'heart-o'}
                                 type='font-awesome'
-                                color='#f00'
+                                color='#FF0800'
                                 onPress={()=>props.favorite? console.log('Already Favorite'): props.onPress(1)}/>
                             <Icon
                                 raised
                                 reverse
                                 name='pencil'
                                 type='font-awesome'
-                                color='#512DA8'
+                                color='#008081'
                                 onPress={()=>props.onPress(2)}/>
+                            <Icon
+                                raised
+                                reverse
+                                name='share'
+                                type='font-awesome'
+                                color='#CD5C5C'
+                                style={styles.cardItem}
+                                onPress={() => shareDish(dish.name, dish.description, baseUrl + dish.image)} />
                         </View>
                     </Card>
                 </Animatable.View>
