@@ -4,7 +4,8 @@ import {Icon,Input,CheckBox,Button,Image} from 'react-native-elements';
 import  * as SecureStore from 'expo-secure-store';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-// import { NavigationContainer } from '@react-navigation/native';
+import * as ImageManipulator from "expo-image-manipulator";
+import { Asset } from 'expo-asset';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { baseUrl } from '../shared/baseUrl';
 
@@ -147,9 +148,19 @@ class RegistrationTab extends Component {
             });
 
             if(!capturedImage.cancelled){
-                this.setState({imageUrl:capturedImage.uri})
+                this.processImage(capturedImage.uri)
             }
         }
+    }
+    processImage = async (imageUri) => {
+        let processeImage = await ImageManipulator.manipulateAsync(
+            imageUri,
+            [
+                {resize:{width:400}}
+            ],
+            {format:'png'}
+        );
+        this.setState({imageUrl:processeImage.uri})
     }
     handleRegister(){
         console.log(JSON.stringify(this.state));
