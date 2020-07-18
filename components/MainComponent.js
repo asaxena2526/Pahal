@@ -20,6 +20,9 @@ import {connect} from 'react-redux';
 import {fetchComments,fetchLeaders,fetchPromos,fetchDishes} from '../redux/ActionCreators';
 import Quizzes from './QuizzesComponent';
 import Bio from './BiologyComponent';
+import Progress from './ProgressComponent';
+import Courses from './TrainingComponent';
+import EoE from './EoEComponent';
 
 
 const mapStateToProps = state =>{
@@ -189,6 +192,32 @@ const QuizNavigator = ({navigation})=>{
 
 }
 
+const TrainNavigator = ({navigation})=>{ 
+    const Nav=createStackNavigator();
+    return(
+        <Nav.Navigator initialRouteName='Training'
+            screenOptions= {{
+                headerStyle: {
+                    backgroundColor: "#e1ad01"
+                },
+                headerTintColor: 'black',
+                headerTitleStyle: {
+                    color: "black"
+                }
+            }}>
+            <Nav.Screen name="Training" component={Courses}
+                options={{
+                    headerLeft: ()=>(<Icon name="menu" size={24} 
+                    color= 'black'
+                    onPress={ () => 
+                        navigation.toggleDrawer() } />)
+                }} />
+            <Nav.Screen name="Essentials of Entrepreneurship" component={EoE} />
+        </Nav.Navigator>
+    );
+
+}
+
 const ReserveNavigator = ({navigation})=>{ 
     const Nav=createStackNavigator();
     return(
@@ -253,7 +282,7 @@ const LoginNavigator = ({navigation})=>{
             <Nav.Screen name="Account" component={Login}
                 options={{
                     headerLeft: ()=>(<Icon name="menu" size={24} 
-                    color= 'white'
+                    color= 'black'
                     onPress={ () => 
                         navigation.toggleDrawer() } />)
                 }} />
@@ -261,16 +290,41 @@ const LoginNavigator = ({navigation})=>{
     );
 
 }
+const ProgressNavigator = ({navigation})=>{ 
+    const Nav=createStackNavigator();
+    return(
+        <Nav.Navigator initialRouteName='Progress'
+            screenOptions= {{
+                headerStyle: {
+                    backgroundColor: "#e1ad01"
+                },
+                headerTintColor: 'black',
+                headerTitleStyle: {
+                    color: "black"
+                }
+            }}>
+            <Nav.Screen name="Progress" component={Progress}
+                options={{
+                    headerLeft: ()=>(<Icon name="menu" size={24} 
+                    color= 'black'
+                    onPress={ () => 
+                        navigation.toggleDrawer() } />)
+                }} />
+        </Nav.Navigator>
+    );
 
+}
 const CustomDrawerContentComponent = (props) => (
     <ScrollView>
       <View style={styles.container} forceInset={{ top: 'always', horizontal: 'never' }}>
         <View style={styles.drawerHeader}>
           <View style={{flex:1}}>
           <Image source={require('./images/logo.png')} style={styles.drawerImage} />
+          {/* <Image source={require('./images/sir.png')} style={styles.drawerImage} /> */}
           </View>
           <View style={{flex: 2}}>
             <Text style={styles.drawerHeaderText}>Pahal</Text>
+            {/* <Text style={styles.drawerHeaderText}>Satvasheel Powar</Text> */}
           </View>
         </View>
         <DrawerItemList {...props} />
@@ -333,7 +387,7 @@ class Main extends Component {
                         }}
                         drawerContent={CustomDrawerContentComponent}
                     >
-                        <Drawer.Screen name="Login" component={LoginNavigator}
+                        {/* <Drawer.Screen name="Login" component={LoginNavigator}
                             options={{ 
                             drawerIcon: ({ tintColor, focused }) => (
                                 <Icon
@@ -342,7 +396,7 @@ class Main extends Component {
                                 size={25}
                                 color={tintColor}
                                 />
-                            )}}/>
+                            )}}/> */}
                         <Drawer.Screen name="Home" component={HomeNavigator}
                             options={{ 
                             drawerIcon: ({ tintColor, focused }) => (
@@ -363,23 +417,43 @@ class Main extends Component {
                                     color={tintColor}
                                     />
                                 )}} />
-                            <Drawer.Screen name="Quizzes" component={QuizNavigator}
+                            <Drawer.Screen name=" Quizzes" component={QuizNavigator}
                             options={{ 
                                 drawerIcon: ({ tintColor, focused }) => (
                                     <Icon
                                     name='question'
                                     type='font-awesome'            
-                                    size={22}
+                                    size={28}
                                     color={tintColor}
                                     />
                                 )}} />
-                            <Drawer.Screen name="Contact Us" component={ContactNavigator}
+                            {/* <Drawer.Screen name="Progress" component={ProgressNavigator}
                             options={{ 
                                 drawerIcon: ({ tintColor, focused }) => (
                                     <Icon
-                                    name='address-card'
+                                    name='bar-chart'
+                                    type='font-awesome'            
+                                    size={20}
+                                    color={tintColor}
+                                    />
+                                )}} />
+                            <Drawer.Screen name="Training" component={TrainNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='trophy'
                                     type='font-awesome'            
                                     size={22}
+                                    color={tintColor}
+                                    />
+                                )}} /> */}
+                            <Drawer.Screen name="How to Use?" component={ContactNavigator}
+                            options={{ 
+                                drawerIcon: ({ tintColor, focused }) => (
+                                    <Icon
+                                    name='question-circle'
+                                    type='font-awesome'            
+                                    size={25}
                                     color={tintColor}
                                     />
                                 )}} />
@@ -389,7 +463,7 @@ class Main extends Component {
                                     <Icon
                                     name='info-circle'
                                     type='font-awesome'            
-                                    size={27}
+                                    size={25}
                                     color={tintColor}
                                     />
                                 )}} />
@@ -453,7 +527,7 @@ const styles = StyleSheet.create({
     drawerImage: {
       margin: 10,
       width: 80,
-      height: 60
+      height: 80
     }
 });
 

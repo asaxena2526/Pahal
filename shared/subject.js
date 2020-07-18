@@ -11,9 +11,19 @@ export const SUBJECTS =
         name: "Geography"
     },
     {
+        id: 13,
+        subjectId: 13,
+        name: "Essentials of Entrepreneurship"
+    },
+    {
         id: 2,
         subjectId: 2,
         name: "Chemistry"
+    },
+    {
+        id: 14,
+        subjectId: 14,
+        name: "PRT"
     },
     {
         id: 3,
